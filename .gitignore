@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+checkpoints/
+*.pt
+*.wav
+*.mp3
+.DS_Store
