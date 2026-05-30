@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Only lightweight tooling is installed. The project's runtime deps
+      # (torch / torchaudio / soundfile) and the training / inference scripts
+      # need a GPU/NPU and audio data, so they are NOT exercised in CI.
+      - name: Install lint/test tooling
+        run: pip install ruff pytest
+
+      - name: Ruff (lint)
+        run: ruff check .
+
+      # Scope tests to the pure-logic suite in tests/, which imports no
+      # heavy dependencies (no torch). This keeps CI green without a GPU.
+      - name: Pytest (pure-logic unit tests)
+        run: pytest -q tests
