@@ -1,0 +1,12 @@
+# Runtime dependencies for APU-Codec.
+#
+# torch / torchaudio are intentionally NOT version-pinned to exact builds:
+# this project targets a custom ROCm / gfx1150 PyTorch build (see README),
+# so the right wheel depends on your platform. The floors below reflect the
+# APIs actually used in the code:
+#   - torch.load(..., weights_only=True)  -> torch >= 1.13
+#   - torch.stft(..., return_complex=True) -> torch >= 1.8
+torch>=1.13
+torchaudio>=0.13
+numpy>=1.21
+soundfile>=0.11

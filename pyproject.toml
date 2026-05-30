@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "apu-codec"
+version = "0.1.0"
+description = "Neural audio codec for AMD APU tri-processor (NPU/CPU/GPU) inference"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Peter Clemente" }]
+dependencies = [
+    # See requirements.txt for why torch/torchaudio are floor-pinned only.
+    "torch>=1.13",
+    "torchaudio>=0.13",
+    "numpy>=1.21",
+    "soundfile>=0.11",
+]
+
+[project.optional-dependencies]
+dev = ["ruff", "pytest"]
+
+[project.urls]
+Homepage = "https://github.com/Peterc3-dev/apu-codec"
+
+[tool.setuptools]
+packages = ["model", "training", "inference"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+# Default rule set (pyflakes + pycodestyle errors) plus import sorting.
+extend-select = ["I"]
+
+[tool.pytest.ini_options]
+# Scope test collection to the pure-logic unit tests. The training and
+# inference scripts depend on torch/torchaudio/audio files and are not
+# collected here.
+testpaths = ["tests"]

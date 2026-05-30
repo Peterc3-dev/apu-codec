@@ -5,6 +5,7 @@ import sys
 
 import soundfile as sf
 import torch
+import torch.nn.functional as F
 import torchaudio
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -69,7 +70,7 @@ def test(audio_path: str, checkpoint_path: str = None):
 
     duration_s = min_len / 44100
 
-    print(f"\nResults:")
+    print("\nResults:")
     print(f"  Original:      {audio_path}")
     print(f"  Reconstructed: {output_path}")
     print(f"  Duration:      {duration_s:.1f}s")
@@ -87,10 +88,6 @@ def test(audio_path: str, checkpoint_path: str = None):
         "codes_shape": list(codes.shape),
         "output_path": output_path,
     }
-
-
-# Need F for cosine_similarity
-import torch.nn.functional as F
 
 
 if __name__ == "__main__":
